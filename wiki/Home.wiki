@@ -2,8 +2,8 @@
 
 = Introduction =
 
-Installation
-Manual
+[Installation]
+[Manual]
 
 
 = Details =
