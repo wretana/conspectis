@@ -3,7 +3,7 @@
 
 = Introduction =
 
-[Installation]
+[Installation] <br>
 [Manual]
 
 
