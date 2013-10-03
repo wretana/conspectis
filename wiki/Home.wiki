@@ -1,4 +1,5 @@
 #summary Welcome to the ConspectIS wiki!
+#labels Featured
 
 = Introduction =
 
