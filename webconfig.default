@@ -1,0 +1,408 @@
+
+<!-- Web.Config Configuration File for ConspectIS -->
+<!-- Configuration modified for optimal compatibility with h5bp HTML template.
+     https://github.com/h5bp/server-configs/blob/master/iis/dotnet%204/mvc4%20%26%20mvc4api/web.config  -->
+
+<configuration>
+	<system.webServer>
+        <!-- GZip static file content.  Overrides the server default which only compresses static files over 2700 bytes -->
+        <httpCompression directory="%SystemDrive%\websites\_compressed" minFileSizeForComp="1024">
+            <scheme name="gzip" dll="%Windir%\system32\inetsrv\gzip.dll" />
+            <staticTypes>
+                <add mimeType="text/*" enabled="true" />
+                <add mimeType="message/*" enabled="true" />
+                <add mimeType="application/javascript" enabled="true" />
+                <add mimeType="application/json" enabled="true" />
+                <add mimeType="*/*" enabled="false" />
+            </staticTypes>
+        </httpCompression>
+        <directoryBrowse enabled="false" />
+        <validation validateIntegratedModeConfiguration="false" />
+        <modules runAllManagedModulesForAllRequests="true" />
+        <urlCompression doStaticCompression="true" />
+        <staticContent>
+            <!-- Set expire headers to 30 days for static content-->
+            <clientCache cacheControlMode="UseMaxAge" cacheControlMaxAge="30.00:00:00" />
+
+            <!-- use utf-8 encoding for anything served text/plain or text/html -->
+            <remove fileExtension=".css" />
+            <mimeMap fileExtension=".css" mimeType="text/css" />
+            <remove fileExtension=".js" />
+            <mimeMap fileExtension=".js" mimeType="application/javascript" />
+            <remove fileExtension=".json" />
+            <mimeMap fileExtension=".json" mimeType="application/json" />
+            <remove fileExtension=".rss" />
+            <mimeMap fileExtension=".rss" mimeType="application/rss+xml; charset=UTF-8" />
+            <remove fileExtension=".html" />
+            <mimeMap fileExtension=".html" mimeType="text/html; charset=UTF-8" />
+            <remove fileExtension=".xml" />
+            <mimeMap fileExtension=".xml" mimeType="application/xml; charset=UTF-8" />
+
+            <!-- HTML5 Audio/Video mime types-->
+            <remove fileExtension=".mp3" />
+            <mimeMap fileExtension=".mp3" mimeType="audio/mpeg" />
+            <remove fileExtension=".mp4" />
+            <mimeMap fileExtension=".mp4" mimeType="video/mp4" />
+            <remove fileExtension=".ogg" />
+            <mimeMap fileExtension=".ogg" mimeType="audio/ogg" />
+            <remove fileExtension=".ogv" />
+            <mimeMap fileExtension=".ogv" mimeType="video/ogg" />
+            <remove fileExtension=".webm" />
+            <mimeMap fileExtension=".webm" mimeType="video/webm" />
+
+            <!-- Proper svg serving. Required for svg webfonts on iPad -->
+            <remove fileExtension=".svg" />
+            <mimeMap fileExtension=".svg" mimeType="image/svg+xml" />
+            <remove fileExtension=".svgz" />
+            <mimeMap fileExtension=".svgz" mimeType="image/svg+xml" />
+
+            <!-- HTML4 Web font mime types -->
+            <!-- Remove default IIS mime type for .eot which is application/octet-stream -->
+            <remove fileExtension=".eot" />
+            <mimeMap fileExtension=".eot" mimeType="application/vnd.ms-fontobject" />
+            <remove fileExtension=".ttf" />
+            <mimeMap fileExtension=".ttf" mimeType="application/x-font-ttf" />
+            <remove fileExtension=".ttc" />
+            <mimeMap fileExtension=".ttc" mimeType="application/x-font-ttf" />
+            <remove fileExtension=".otf" />
+            <mimeMap fileExtension=".otf" mimeType="font/otf" />
+            <remove fileExtension=".woff" />
+            <mimeMap fileExtension=".woff" mimeType="application/x-font-woff" />
+            <remove fileExtension=".crx" />
+            <mimeMap fileExtension=".crx" mimeType="application/x-chrome-extension" />
+            <remove fileExtension=".xpi" />
+            <mimeMap fileExtension=".xpi" mimeType="application/x-xpinstall" />
+            <remove fileExtension=".safariextz" />
+            <mimeMap fileExtension=".safariextz" mimeType="application/octet-stream" />
+
+            <!-- Flash Video mime types-->
+            <remove fileExtension=".flv" />
+            <mimeMap fileExtension=".flv" mimeType="video/x-flv" />
+            <remove fileExtension=".f4v" />
+            <mimeMap fileExtension=".f4v" mimeType="video/mp4" />
+
+            <!-- Asorted types -->
+            <remove fileExtension=".ico" />
+            <mimeMap fileExtension=".ico" mimeType="image/x-icon" />
+            <remove fileExtension=".webp" />
+            <mimeMap fileExtension=".webp" mimeType="image/webp" />
+            <remove fileExtension=".appcache" />
+            <mimeMap fileExtension=".appcache" mimeType="text/cache-manifest" />
+            <remove fileExtension=".manifest" />
+            <mimeMap fileExtension=".manifest" mimeType="text/cache-manifest" />
+            <remove fileExtension=".htc" />
+            <mimeMap fileExtension=".htc" mimeType="text/x-component" />
+            <remove fileExtension=".vcf" />
+            <mimeMap fileExtension=".vcf" mimeType="text/x-vcard" />
+        </staticContent>
+        <httpProtocol>
+            <customHeaders>
+
+                <!--#### SECURITY Related Headers ###-->
+                <!--
+                # Access-Control-Allow-Origin
+                The 'Access Control Allow Origin' HTTP header is used to control which 
+                sites are allowed to bypass same origin policies and send cross-origin requests.
+                
+                Secure configuration: Either do not set this header, or return the 'Access-Control-Allow-Origin' 
+                header restricting it to only a trusted set of sites.
+                http://enable-cors.org/
+                
+                <add name="Access-Control-Allow-Origin" value="*" />
+                -->
+
+                <!-- 
+                # Cache-Control
+                The 'Cache-Control' response header controls how pages can be cached 
+                either by proxies or the users browser. 
+                This response header can provide enhanced privacy by not caching 
+                sensitive pages in the users browser cache. -->
+                <add name="Cache-Control" value="no-store, no-cache"/>
+                
+
+                <!--
+                # Strict-Transport-Security
+                The HTTP Strict Transport Security header is used to control 
+                if the browser is allowed to only access a site over a secure connection 
+                and how long to remember the server response for, forcing continued usage.
+                Note* Currently a draft standard which only Firefox and Chrome support. But is supported by sites like PayPal.
+                <add name="Strict-Transport-Security" value="max-age=15768000"/>
+                -->
+
+                <!--
+                # X-Frame-Options
+                The X-Frame-Options header indicates whether a browser should be allowed 
+                to render a page within a frame or iframe. 
+                The valid options are DENY (deny allowing the page to exist in a frame)
+                or SAMEORIGIN (allow framing but only from the originating host)
+                Without this option set the site is at a higher risk of click-jacking. -->
+                <add name="X-Frame-Options" value="SAMEORIGIN" />
+                
+
+                <!--
+                # X-XSS-Protection
+                The X-XSS-Protection header is used by Internet Explorer version 8+
+                The header instructs IE to enable its inbuilt anti-cross-site scripting filter. 
+                If enabled, without 'mode=block', there is an increased risk that 
+                otherwise non-exploitable cross-site scripting vulnerabilities may potentially become exploitable  -->
+                <add name="X-XSS-Protection" value="1; mode=block"/>
+               
+
+                <!-- A little extra security (by obscurity) -->
+                <remove name="X-Powered-By" />
+
+                <!--//#### SECURITY Related Headers ###-->
+                
+                <!--
+                # E-TAGS
+                E-Tags are actually quite useful in cache management especially if you have a front-end caching server
+                such as Varnish. http://en.wikipedia.org/wiki/HTTP_ETag / http://developer.yahoo.com/performance/rules.html#etags
+                But in load balancing and simply most cases ETags are mishandled in IIS; and it can be advantageous to remove them.
+                This is simply done by overriding the default server header with an empty tag.
+                See http://bytestopshere.wordpress.com/2009/02/02/disable-remove-etags-on-iis-6-to-improve-performance/
+                
+                <add name="E-TAG" value="" />
+                -->
+                
+                <!-- 
+                Force the latest IE version, in various cases when it may fall back to IE7 mode
+                github.com/rails/rails/commit/123eb25#commitcomment-118920
+                Use ChromeFrame if it's installed for a better experience for the poor IE folk 
+                -->
+                <add name="X-UA-Compatible" value="IE=Edge,chrome=1" />
+                <!-- 
+                Allow cookies to be set from iframes (for IE only)
+                If needed, uncomment and specify a path or regex in the Location directive 
+                
+                <add name="P3P" value="policyref=&quot;/w3c/p3p.xml&quot;, CP=&quot;IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT&quot;" />
+                -->
+            </customHeaders>
+        </httpProtocol>
+		<defaultDocument>
+				<files>
+				<clear />
+				<add value="install.aspx" />
+			</files>
+		</defaultDocument>
+        <!-- 
+        <rewrite>
+            <rules>
+                
+            Remove/force the WWW from the URL.  
+            Requires IIS Rewrite module http://learn.iis.net/page.aspx/460/using-the-url-rewrite-module/ 
+            Configuration lifted from http://nayyeri.net/remove-www-prefix-from-urls-with-url-rewrite-module-for-iis-7-0
+            
+            NOTE* You need to install the IIS URL Rewriting extension (Install via the Web Platform Installer)
+            http://www.microsoft.com/web/downloads/platform.aspx
+            
+            ** Important Note 
+            using a non-www version of a webpage will set cookies for the whole domain making cookieless domains 
+            (eg. fast cdn-like access of static resources like css, js and images) impossible.
+            
+            # IMPORTANT: THERE ARE TWO RULES LISTED. NEVER USE BOTH RULES AT THE SAME TIME!
+            
+                <rule name="Remove WWW" stopProcessing="true">
+                    <match url="^(.*)$" />
+                    <conditions>
+                        <add input="{HTTP_HOST}" pattern="^(www\.)(.*)$" />
+                    </conditions>
+                    <action type="Redirect" url="http://example.com{PATH_INFO}" redirectType="Permanent" />
+                </rule>
+                <rule name="Force WWW" stopProcessing="true"> 
+                    <match url=".*" /> 
+                    <conditions> 
+                        <add input="{HTTP_HOST}" pattern="^example.com$" /> 
+                    </conditions> 
+                    <action type="Redirect" url="http://www.example.com/{R:0}" redirectType="Permanent" /> 
+                </rule> 
+            -->
+            <!--
+            ### Built-in filename-based cache busting
+            
+            If you're not using the build script to manage your filename version revving,
+            you might want to consider enabling this, which will route requests for
+            /css/style.20110203.css to /css/style.css
+
+            To understand why this is important and a better idea than all.css?v1231,
+            read: github.com/h5bp/html5-boilerplate/wiki/Version-Control-with-Cachebusting
+
+                <rule name="Cachebusting">
+                    <match url="^(.+)\.\d+(\.(js|css|png|jpg|gif)$)" />
+                    <action type="Rewrite" url="{R:1}{R:2}" />
+                </rule>
+            
+            </rules>
+        </rewrite>-->
+	</system.webServer>
+    <system.web>
+		<pages>
+            <namespaces>
+           <!-- <add namespace="System.Web.Helpers" />
+                <add namespace="System.Web.Mvc" />
+                <add namespace="System.Web.Mvc.Ajax" />
+                <add namespace="System.Web.Mvc.Html" />
+                <add namespace="System.Web.Optimization" />
+                <add namespace="System.Web.Routing" />
+                <add namespace="System.Web.WebPages" /> -->
+            </namespaces>
+			<controls>
+			</controls>
+		</pages>
+        <!-- 
+            Set compilation debug="true" to insert debugging 
+            symbols into the compiled page. Because this 
+            affects performance, set this value to true only 
+            during development.
+        -->
+		<compilation defaultLanguage="c#" debug="true">
+			<assemblies>
+				<add assembly="System.DirectoryServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=B03F5F7F11D50A3A"/>
+				<add assembly="System.Data.OracleClient, Version=4.0.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089"/>
+			</assemblies>
+		</compilation>
+
+        <!-- Security through obscurity, removes  X-AspNet-Version HTTP header from the response -->
+        <httpRuntime enableVersionHeader="false" />
+
+        <authentication mode="Windows" />
+
+		<httpHandlers>
+			<!-- Added 4/6/10 to support PowerShellASP Functionality, Chris Knight-->
+			<add verb="*" path="*.ps1x" type="PowerShellToys.PowerShellASP.PSHandler,PowerShellToys.PowerShellASP" />
+		</httpHandlers>
+		<httpModules>
+			
+		</httpModules>
+        <!--
+            The <customErrors> section enables configuration 
+            of what to do if/when an unhandled error occurs 
+            during the execution of a request. Specifically, 
+            it enables developers to configure html error pages 
+            to be displayed in place of a error stack trace. 
+
+		<customErrors mode="RemoteOnly" defaultRedirect="GenericErrorPage.htm">
+			<error statusCode="403" redirect="NoAccess.htm" />
+			<error statusCode="404" redirect="404.html" />
+		</customErrors> -->
+		<customErrors mode="Off"/>
+
+        <sessionState mode="InProc" customProvider="DefaultSessionProvider">
+            <providers>
+                <add name="DefaultSessionProvider" type="System.Web.Providers.DefaultSessionStateProvider, System.Web.Providers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" connectionStringName="DefaultConnection" />
+            </providers>
+        </sessionState>
+    </system.web>
+	<location path="ScriptResource.axd">
+	 <system.web>
+	   <authorization>
+		     <allow users="*"/>
+		  </authorization>
+	</system.web>
+	</location>
+	<location allowOverride="true" inheritInChildApplications="true"></location>
+	<appSettings>
+
+<!-- Application Customization settings -->
+		<add key="systemName" value= "ConspectIS"/>								<!-- ConspectIS System Full Name -->
+		<add key="systemShortName" value= "CIS"/>								<!-- ConspectIS System Short Name -->
+		<add key="systemURL" value= "http://server.fqdn/cis/"/>	<!-- URL of system, including 'http://' and trailing slash '/' -->
+		<add key="iisAppName" value= "ConspectIS"/>								<!-- Name of IIS Application/Virtual Directory containing ConspectIS, default is '' (ConspectIS runs from Default IIS Web Site)-->
+		<add key="systemEmail" value= "ConspectIS@fqdn"/>						<!-- ConspectIS System Admin and Support Email Address -->
+
+<!-- Database backend setting -->
+		<add key="db_type" value="MsSql"/>						<!-- msJet, MsSql, Oracle, or ODBC -->
+
+<!-- OLE DB .NET Framework Data Provider (usually MS-Access/MS-Jet) Database Connection-Specific settings -->
+		<add key="db_OleDbProv" value="Microsoft.Jet.OLEDB.4.0" />	<!-- OLEDB: Provider like'Microsoft.Jet.OLEDB.4.0' -->
+		<add key="db_OleDbFile" value="conspectis.mdb"/>						<!-- OLEDB: valid for msJet, msAccess connections, like 'filename_withoutPath.mdb'' -->
+		<add key="db_OleDbPath" value="c:\\program files\\conspectis"/>						<!-- OLEDB: File path to MDB,backslashes must be escaped, like 'drive:\\folder\\subfolder\\' -->
+		<add key="db_OleDbOptions" value=""/>						<!-- MSSQL: Database Options -->
+
+<!-- MSSQL Server .NET Framework Data Provider Database Connection-Specific settings -->
+		<add key="db_SqlDbServer" value="dbserver.fqdn" />	<!-- MSSQL: Database Server & named instance + port, like 'databaseserver:instance,port' -->
+		<add key="db_SqlDbName" value="conspectis-db"/>						<!-- MSSQL: Database / Schema Name -->
+		<add key="db_SqlDbUser" value="DOMAIN\svc.conspectis_sql"/>						<!-- MSSQL: SQL-Server Auth Database Priviledged User -->
+		<add key="db_SqlDbPass" value="password"/>						<!-- MSSQL: SQL-Server Auth Database Priviledged Password -->
+		<add key="db_SqlDbOptions" value="Integrated Security=SSPI;"/>						<!-- MSSQL: Database Options -->
+
+<!-- Oracle .NET Framework Data Provider Database Connection-Specific settings -->
+		<add key="db_OracleDbServer" value="dbserver.fqdn" />	<!-- ORACLE: Database Server -->
+		<add key="db_OracleDbInstance" value=""/>						<!-- ORACLE: Instance Name -->
+		<add key="db_OracleDbService" value=""/>						<!-- ORACLE: Service and Mode, like 'servicename:DEDICATED(SHARED,POOLED)' -->
+		<add key="db_OracleDbUser" value="DOMAIN\svc.conspectis_ora"/>						<!-- ORACLE: Database Priviledged User -->
+		<add key="db_OracleDbPass" value="password"/>						<!-- ORACLE: Database Priviledged User -->
+		<add key="db_OracleDbOptions" value=""/>						<!-- ORACLE: Database Options -->
+
+<!-- ODBC (DSN) .Net Framework Data Provider (All other databases) Database Connection-Specific settings -->
+		<add key="db_OdbcDbDsn" value="conspectis_db" />							<!-- ODBC: DSN -->
+		<add key="db_OdbcDbUser" value="DOMAIN\svc.conspectis_odbc"/>						<!-- ODBC: Database Priviledged User -->
+		<add key="db_OdbcDbPass" value="password"/>						<!-- ODBC: Database Priviledged User -->
+		<add key="db_OdbcDbOptions" value=""/>						<!-- ORACLE: Database Options -->
+
+<!-- Encryption settings -->
+		<add key="encryptPhrase" value= "6ewACrA5" />					<!-- can be any string -->
+		<add key="encryptSalt" value= "sasPU5ej" />					<!-- can be any string -->
+	    <add key="encryptAlgorithm" value= "SHA1" />					<!-- can be "MD5" -->
+	    <add key="encryptIterations" value = "2" />						<!-- can be any number -->
+	    <add key="encryptInitVector" value= "@1B2c3D4e5F6g7H8" />				<!-- must be 16 bytes -->
+		<add key="encryptKeySize" value= "256"/>					<!-- can be 192 or 128 -->
+		<add key="cipherPrefix" value= "eNc"/>						<!-- All encrypted values get this prefix ahead of data -->
+
+<!-- E-Mailing settings -->
+		<add key="mailerGateway" value= "smtp.fqdn"/>				<!-- IP Address or FQDN of SMTP Gateway -->
+		<add key="mailerFrom" value= "conspectis@fqdn"/>			<!-- Return email address, usually a helpdesk or administrator contact -->
+		<add key="forcedMailerTo" value= ""/>						<!-- Address here will override any other method for determining mail recipients -->
+		<add key="forcedMailerCc" value= ""/>						<!-- Address here will override any other method for determining mail recipients -->
+		<add key="forcedMailerBcc" value= ""/>						<!-- Address here will override any other method for determining mail recipients -->
+		<add key="emailConfirmLDAP" value= "ldap://ldap.fqdn:389/"/>			<!-- URL for email LDAP Provider -->
+		<add key="emailConfirmBaseDN" value= "o=LDAP"/>					<!-- LDAP DN for searches-->
+
+<!--VMWare Integration settings MOVE TO DATABASE TABLE (sysStat)-->
+		<add key="vic_server" value= "vsphere.fqdn"/>			<!-- Hostname / IP of VMWare VIC server -->
+		<add key="vic_user" value= "DOMAIN\svc.conspectis_vsphere"/>				<!-- Username of account with VIC priviledges -->
+		<add key="vic_pass" value= "password"/>					<!-- Password of account with VIC priviledges -->
+		<add key="vic_datacenter" value= "VSPHERE"/>					<!-- Default datacenter to be used with vic/wod -->
+		<add key="vic_cluster" value= "VSPHERE"/>				<!-- Default cluster to be used by WoD module-->
+
+<!-- Authentication & Access Restriction Settings -->
+		<add key="authLDAP" value= "LDAP://fqdn:389/"/>			<!-- URL for AD-Auth LDAP Provider-->
+		<add key="authBaseDN" value= "OU=Users,DC=fqdnA,DC=fqdnB,DC=fqdnC"/>	<!-- LDAP BaseDN for Auth -->
+		<add key="authUserDN" value= "svc.conspectis_ldap"/>							<!-- LDAP UserDN for Auth -->
+		<add key="authBindDN" value= "password"/>
+		<add key="ADUsersGroup" value= "Conspectis_Users"/>								<!-- -->
+		<add key="ADAdminsGroup" value= "Conspectis_Admins"/>								<!-- -->
+		<add key="ADSuperGroup" value= "Conspectis_Super"/>								<!-- -->
+		<add key="ADWoDUsersGroup" value= "Conspectis_WoD_Users"/>								<!-- -->
+		<add key="ADWoDAdminsGroup" value= "Conspectis_WoD_Admins"/>								<!-- -->
+
+<!-- DNS Search settings MOVE TO DATABASE TABLE (DATACENTERS)-->
+		<add key="DNSSearchOrder" value= "fqdn"/>				<!-- -->
+
+<!-- Extra settings -->
+
+		<add key="" value= ""/>								<!-- -->
+		<add key="" value= ""/>								<!-- -->
+
+		<add key="" value= ""/>								<!-- -->
+		<add key="" value= ""/>								<!-- -->
+		<add key="" value= ""/>								<!-- -->
+
+	</appSettings>
+<!--<runtime>
+        <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+            <dependentAssembly>
+                <assemblyIdentity name="System.Web.Helpers" publicKeyToken="31bf3856ad364e35" />
+                <bindingRedirect oldVersion="1.0.0.0-2.0.0.0" newVersion="2.0.0.0" />
+            </dependentAssembly>
+            <dependentAssembly>
+                <assemblyIdentity name="System.Web.Mvc" publicKeyToken="31bf3856ad364e35" />
+                <bindingRedirect oldVersion="1.0.0.0-4.0.0.0" newVersion="4.0.0.0" />
+            </dependentAssembly>
+            <dependentAssembly>
+                <assemblyIdentity name="System.Web.WebPages" publicKeyToken="31bf3856ad364e35" />
+                <bindingRedirect oldVersion="1.0.0.0-2.0.0.0" newVersion="2.0.0.0" />
+            </dependentAssembly>
+        </assemblyBinding> 
+    </runtime>  -->
+</configuration>
+ 
