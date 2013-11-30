@@ -1,0 +1,26 @@
+<html>
+ <head>
+
+ </head>
+ <body>
+
+ <% Add-PSSnapin VMware.VimAutomation.Core %>
+ <% $username = 'root' %>
+ <% $vc       = '192.168.1.107' %>
+ <% $profile  = 'C:\Log\' %>
+ <% $password = 'B0n35mu66l3r' %>
+
+ <% Connect-VIServer -Server $vc -User $username -Password $password %>
+
+ <table>
+ <tr>
+
+ <% Get-VM | Select Name, powerstate, host, MemoryMB %>
+
+ </tr>
+ </table>
+
+ <% Disconnect-VIServer * %>
+
+ </body>
+</html>
